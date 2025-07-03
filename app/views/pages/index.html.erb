@@ -1,7 +1,9 @@
-<h1>Welcome to  Journal App</h1>
+<h1>Welcome to Journal App</h1>
 
 <% if !current_user %>
     <h3> You are not signed in! </h3>
 <% else %>
     <h3> You are signed in <%= current_user.email %>! </h3>
 <% end %>
+
+<%= button_to "logout", destroy_user_session_path, method: :delete, class: 'btn btn-danger' %>
