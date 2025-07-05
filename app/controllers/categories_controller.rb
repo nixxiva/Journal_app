@@ -1,23 +1,24 @@
 class CategoriesController < ApplicationController
-  before_action :set_category, except: [:new, :create]
+  before_action :set_category, except: [:new, :create, :index]
+  before_action :set_user
 
   def index
-    @categories = current_user.categories.all
+    @categories = @user.categories.all
   end
 
   def show
+    @category = @user.categories.find(params[:id])
   end
 
   def new
-    @user = current_user
-    @category = current_user.categories.build
+    @category = @user.categories.build
   end
 
   def create
-    @category = current_user.categories.build(category_params)
+    @category = @user.categories.build(category_params)
     if @category.save
       flash[:notice] = "Category added"
-      redirect_to @category
+      redirect_to user_category_path(@user, @category)
     else
       flash[:alert] = "Category cannot be added"
       render :new, status: :unprocessable_entity
@@ -41,5 +42,9 @@ class CategoriesController < ApplicationController
 
   def set_category
     @category = current_user.categories.find(params[:id])
+  end
+
+  def set_user
+    @user = current_user
   end
 end

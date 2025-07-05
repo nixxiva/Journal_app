@@ -6,4 +6,15 @@
     <h3> You are signed in <%= current_user.email %>! </h3>
 <% end %>
 
+<h4>Your Categories:</h4>
+  <% if @categories.any? %>  <!-- If there are categories -->
+    <ul>
+      <% @categories.each do |category| %>
+        <li><%= category.title %></li>  <!-- Display each category title -->
+      <% end %>
+    </ul>
+  <% else %>
+    <p>You have no categories yet.</p>
+  <% end %>
+  
 <%= button_to "logout", destroy_user_session_path, method: :delete, class: 'btn btn-danger' %>
