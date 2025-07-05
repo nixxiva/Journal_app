@@ -6,9 +6,7 @@ class CategoriesController < ApplicationController
     @categories = @user.categories.all
   end
 
-  def show
-    @category = @user.categories.find(params[:id])
-  end
+  def show; end
 
   def new
     @category = @user.categories.build
@@ -28,10 +26,20 @@ class CategoriesController < ApplicationController
   def edit
   end
 
-  def update  
+  def update
+    if @category.update(category_params)
+      flash[:notice] = "Successfully updated category"
+      redirect_to user_category_path(@user, @category)  
+    else
+      flash[:alert] = "Failed updating category. Please try again"
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   def destroy
+    @category.destroy
+    flash[:notice] = "Category deleted"
+    redirect_to user_category_path(@user, @category)  
   end
 
   private

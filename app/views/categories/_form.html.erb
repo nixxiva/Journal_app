@@ -1,4 +1,4 @@
-<%= form_with(model: @category, url: user_categories_path(@user), local: true) do |form| %>
+<%= form_with(model: [@user, @category], local: true) do |form| %>
   <p>
     <%= form.label :title %><br>
     <%= form.text_field :title %>
@@ -22,6 +22,6 @@
   </p>
 
   <p>
-    <%= form.submit %>
+    <%= form.submit @category.new_record? ? "Create Category" : "Update Category" %>
   </p>
 <% end %>
