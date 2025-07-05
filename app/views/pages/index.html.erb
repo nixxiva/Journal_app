@@ -11,6 +11,7 @@
     <ul>
       <% @categories.each do |category| %>
         <li><%= category.title %></li>
+        <p> <%= link_to "Show category", user_category_path(@user, category) %> </p>
         <p> <%= link_to "Edit", edit_user_category_path(@user, category) %> </p>
         <p> <%= link_to "Delete", user_category_path(@user, category),
         data: { turbo_method: :delete, turbo_confirm: "Sure delete?" } %> </p>
