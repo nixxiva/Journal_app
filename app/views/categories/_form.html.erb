@@ -1,0 +1,27 @@
+<%= form_with(model: @category, url: user_categories_path(@user), local: true) do |form| %>
+  <p>
+    <%= form.label :title %><br>
+    <%= form.text_field :title %>
+
+    <% if @category.errors[:title].any? %>
+      <% @category.errors[:title].each do |message| %>
+        <div><%= message %></div>
+      <% end %>
+    <% end %>
+  </p>
+
+  <p>
+    <%= form.label :body %><br>
+    <%= form.text_area :body %>
+
+    <% if @category.errors[:body].any? %>
+      <% @category.errors[:body].each do |message| %>
+        <div><%= message %></div>
+      <% end %>
+    <% end %>
+  </p>
+
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>

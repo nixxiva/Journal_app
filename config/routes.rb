@@ -1,4 +1,18 @@
 Rails.application.routes.draw do
+  get "tasks/index"
+  get "tasks/show"
+  get "tasks/new"
+  get "tasks/create"
+  get "tasks/edit"
+  get "tasks/update"
+  get "tasks/destroy"
+  get "categories/index"
+  get "categories/show"
+  get "categories/new"
+  get "categories/create"
+  get "categories/edit"
+  get "categories/update"
+  get "categories/destroy"
   devise_for :users
   get "pages/index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -13,5 +27,9 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "pages#index"
-  get '/dashboard', to: "pages#index"
+  resources :users do
+    resources :categories do
+      resources :tasks
+    end
+  end
 end
