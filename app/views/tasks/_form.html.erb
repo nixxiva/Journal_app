@@ -1,0 +1,38 @@
+<%= form_with(model: [@user, @category, @task], local: true) do |form| %>
+  <p>
+    <%= form.label :task_Name, "Task Name" %><br>
+    <%= form.text_field :task_name %>
+
+    <% if @task.errors[:task_name].any? %>
+      <% @task.errors[:task_name].each do |message| %>
+        <div><%= message %></div>
+      <% end %>
+    <% end %>
+  </p>
+
+  <p>
+    <%= form.label :definition, "Definition" %><br>
+    <%= form.text_area :definition %>
+
+    <% if @task.errors[:definition].any? %>
+      <% @task.errors[:definition].each do |message| %>
+        <div><%= message %></div>
+      <% end %>
+    <% end %>
+  </p>
+
+   <p>
+    <%= form.label :due_date, "Due date" %><br>
+    <%= form.text_field :due_date, type: "date" %>
+
+    <% if @task.errors[:due_date].any? %>
+      <% @task.errors[:due_date].each do |message| %>
+        <div><%= message %></div>
+      <% end %>
+    <% end %>
+  </p>
+
+  <p>
+    <%= form.submit @task.new_record? ? "Create Task" : "Update Task" %>
+  </p>
+<% end %>

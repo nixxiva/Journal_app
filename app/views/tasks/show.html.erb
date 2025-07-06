@@ -1,2 +1,27 @@
-<h1>Tasks#show</h1>
-<p>Find me in app/views/tasks/show.html.erb</p>
+<h1>Task: <%= @task.task_name %></h1>
+<p><b>Definition: </b> <%= @task.definition %></p>
+<p><b>Due date: </b> <%= @task.due_date.strftime("%B %d, %Y") %></p>
+
+<p>
+	<%= link_to 'Edit task', edit_user_category_task_path(@user, @category, @task) %>
+	<%= link_to 'Delete', edit_user_category_task_path %>
+	<%= link_to 'Back to category', user_category_path(@user, @category) %>
+	<%= link_to 'Back to dashboard', dashboard_path %>
+</p>
+
+<hr>
+
+<% if @all_user_tasks.any? %>
+  <ul>
+    <% @all_user_tasks.each do |task_item| %>
+      <li>
+          <h3><%= task_item.task_name %> </h3>
+					<p><b>Definition: </b><%= task_item.definition %> </p>
+					<p><b>Due date: </b><%= task_item.due_date.strftime("%B %d, %Y") %> </p>
+			</li>
+			<% end %>
+  	</ul>
+	<% else %>
+    <p> You have no task yet </p>
+	<% end %>
+

@@ -1,26 +1,34 @@
 <h1>Welcome to Journal App</h1>
 
 <% if !current_user %>
-    <h3> You are not signed in! </h3>
+  <h3>You are not signed in!</h3>
 <% else %>
-    <h3> You are signed in <%= current_user.email %>! </h3>
+  <h3>You are signed in as <%= current_user.email %>!</h3>
 <% end %>
 
 <h4>Your Categories:</h4>
-  <% if @categories.any? %>  <!-- If there are categories -->
-    <ul>
-      <% @categories.each do |category| %>
-        <li><%= category.title %></li>
-        <p> <%= link_to "Show category", user_category_path(@user, category) %> </p>
-        <p> <%= link_to "Edit", edit_user_category_path(@user, category) %> </p>
-        <p> <%= link_to "Delete", user_category_path(@user, category),
-        data: { turbo_method: :delete, turbo_confirm: "Sure delete?" } %> </p>
-      <% end %>
-    </ul>
-  <% else %>
-    <p>You have no categories yet.</p>
-  <% end %>
+<% if @categories.any? %> 
+  <ul>
+    <% @categories.each do |category| %>
+      <li>
+        <%= category.title %> 
+        <p>
+          <%= link_to "Show category", user_category_path(@user, category) %>
+        </p>
+        <p>
+          <%= link_to "Edit", edit_user_category_path(@user, category) %>
+        </p>
+        <p>
+          <%= link_to "Delete", user_category_path(@user, category),
+              data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete?" } %>
+        </p>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>Create your first category!</p>
+<% end %>
 
 <%= link_to 'Create New Category', new_user_category_path(current_user), class: 'btn btn-primary' %>
 
-<%= button_to "logout", destroy_user_session_path, method: :delete, class: 'btn btn-danger' %>
+<%= button_to "Logout", destroy_user_session_path, method: :delete, class: 'btn btn-danger' %>
