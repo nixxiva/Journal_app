@@ -4,24 +4,12 @@
 
 <p>
 	<%= link_to 'Edit task', edit_user_category_task_path(@user, @category, @task) %>
-	<%= link_to 'Delete', edit_user_category_task_path %>
+	<%= link_to "Delete", user_category_task_path(@user, @category, @task),
+              data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete?" } %>
 	<%= link_to 'Back to category', user_category_path(@user, @category) %>
 	<%= link_to 'Back to dashboard', dashboard_path %>
 </p>
 
 <hr>
 
-<% if @all_user_tasks.any? %>
-  <ul>
-    <% @all_user_tasks.each do |task_item| %>
-      <li>
-          <h3><%= task_item.task_name %> </h3>
-					<p><b>Definition: </b><%= task_item.definition %> </p>
-					<p><b>Due date: </b><%= task_item.due_date.strftime("%B %d, %Y") %> </p>
-			</li>
-			<% end %>
-  	</ul>
-	<% else %>
-    <p> You have no task yet </p>
-	<% end %>
 

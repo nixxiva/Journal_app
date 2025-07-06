@@ -6,7 +6,10 @@ class CategoriesController < ApplicationController
     @categories = @user.categories.all
   end
 
-  def show; end
+  def show
+    @all_user_tasks = @user.tasks.order(due_date: :asc)
+    @task = @category.tasks
+  end
 
   def new
     @category = @user.categories.build
@@ -16,7 +19,7 @@ class CategoriesController < ApplicationController
     @category = @user.categories.build(category_params)
     if @category.save
       flash[:notice] = "Category added"
-      redirect_to user_category_path(@user, @category)
+      redirect_to dashboard_path
     else
       flash[:alert] = "Category cannot be added"
       render :new, status: :unprocessable_entity

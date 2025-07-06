@@ -1,8 +1,19 @@
-<h1><%= @category.title %></h1>
-<p><%= @category.body %></p>
+<% if @all_user_tasks.any? %>
+  <ul>
+    <% @all_user_tasks.each do |task_item| %>
+      <li>
+        <!-- Make task name clickable, linking to the task's show page -->
+        <h3><%= link_to task_item.task_name, user_category_task_path(@user, @category, task_item) %></h3>
+        
+        <p><b>Definition: </b><%= task_item.definition %></p>
+        <p><b>Due date: </b><%= task_item.due_date.strftime("%B %d, %Y") %></p>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>Create your first task!</p>
+<% end %>
 
 <%= link_to 'Add Task', new_user_category_task_path(@user, @category), class: 'btn btn-primary' %>
-
-<%= link_to 'Show Tasks', user_category_task_path(@user, @category), class: 'btn btn-primary' %>
 
 <%= link_to 'Back to dashboard', dashboard_path, class: 'btn btn-primary' %>

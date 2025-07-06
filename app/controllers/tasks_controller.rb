@@ -46,6 +46,7 @@ class TasksController < ApplicationController
   def destroy
     if @task.destroy
       flash[:notice] = "Task sucessfully deleted!"
+      redirect_to user_category_path(@user, @category, @task)
     else
       flash[:alert] = "Cannot delete task."
       redirect_to user_category_task_path(@user, @category, @task)
