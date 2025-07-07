@@ -3,7 +3,9 @@ class TasksController < ApplicationController
   before_action :set_user
   before_action :set_category
   before_action :set_task, except: [:new, :create]
-
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+  rescue_from ActiveRecord::InvalidForeignKey, with: :invalid_foreign_key
+  
   def index
     @task = @category.tasks.all
   end
@@ -58,25 +60,25 @@ class TasksController < ApplicationController
   end
 
   def set_category
-    begin
-      @category = @user.categories.find(params[:category_id])
-    rescue ActiveRecord::RecordNotFound
-      redirect_to root_path, alert: "Category not found or you don't have an access."
-      return
-    end
+    @category = @user.categories.find(params[:category_id])
   end
 
   def set_task
-    begin
-      @task = @category.tasks.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      redirect_to user_category_tasks_path(@user, @category), alert: "Task not found"
-      return
-    end
+    @task = @category.tasks.find(params[:id])
   end
 
   def task_params
     params.require(:task).permit(:task_name, :definition, :due_date)
+  end
+
+  def record_not_found
+    flash[:alert] = "Task does not exist."
+    redirect_to user_category_path(current_user, @category)
+  end
+
+  def invalid_foreign_key
+    flash[:alert] = "Invalid."
+    redirect_to user_category_task_path(current_user, @category, @task)
   end
 end
 

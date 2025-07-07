@@ -2,6 +2,8 @@ class CategoriesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_category, except: [:new, :create, :index]
   before_action :set_user
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+  rescue_from ActiveRecord::InvalidForeignKey, with: :invalid_foreign_key
 
   def index
     @categories = @user.categories.all
@@ -21,7 +23,7 @@ class CategoriesController < ApplicationController
     @category = @user.categories.build(category_params)
     if @category.save
       flash[:notice] = "Category added"
-      redirect_to dashboard_path
+      redirect_to user_categories_path(@user)
     else
       flash[:alert] = "Category cannot be added"
       render :new, status: :unprocessable_entity
@@ -43,7 +45,7 @@ class CategoriesController < ApplicationController
   def destroy
     @category.destroy
     flash[:notice] = "Category deleted"
-    redirect_to user_category_path(@user, @category)  
+    redirect_to user_categories_path(@user)  
   end
 
   private
@@ -58,5 +60,15 @@ class CategoriesController < ApplicationController
 
   def set_user
     @user = current_user
+  end
+
+  def record_not_found
+    flash[:alert] = "Category does not exist."
+    redirect_to user_categories_path(current_user)
+  end
+
+  def invalid_foreign_key
+    flash[:alert] = "Invalid."
+    redirect_to user_category_path(current_user)
   end
 end
