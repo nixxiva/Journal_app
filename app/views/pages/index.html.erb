@@ -1,4 +1,4 @@
-<h1>Welcome to Journal App</h1>
+<h1>Welcome to your Dashboard, <%= current_user.first_name %> </h1>
 
 <% if !current_user %>
   <h3>You are not signed in!</h3>
@@ -32,3 +32,28 @@
 <%= link_to 'Create New Category', new_user_category_path(current_user), class: 'btn btn-primary' %>
 
 <%= button_to "Logout", destroy_user_session_path, method: :delete, class: 'btn btn-danger' %>
+
+<h1>Today's Tasks</h1>
+
+<% no_tasks_for_today = true %> 
+
+<% @all_category.each do |category| %>
+  <% tasks_today_for_category = category.tasks.where(due_date: Date.today) %>
+
+  <% if tasks_today_for_category.any? %>
+    <h3><%= category.title %></h3>
+    <ul>
+      <% tasks_today_for_category.each do |task| %>
+        <li>
+          <h4><%= task.task_name %></h4>
+          <p><b>Definition: </b><%= task.definition %></p>
+        </li>
+      <% end %>
+    </ul>
+    <% no_tasks_for_today = false %>
+  <% end %>
+<% end %>
+
+<% if no_tasks_for_today %>
+  <p>You have no tasks for today.</p> 
+<% end %>
