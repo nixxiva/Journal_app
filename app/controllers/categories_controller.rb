@@ -9,6 +9,7 @@ class CategoriesController < ApplicationController
   def show
     @all_user_tasks = @user.tasks.order(due_date: :asc)
     @task = @category.tasks
+    @category_tasks = @category.tasks.order(due_date: :asc)
   end
 
   def new
@@ -26,8 +27,7 @@ class CategoriesController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @category.update(category_params)

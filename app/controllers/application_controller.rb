@@ -9,6 +9,6 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    dashboard_path  # Redirects to the dashboard URL
+    dashboard_path
   end
 end
