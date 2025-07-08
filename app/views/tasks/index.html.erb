@@ -1,2 +1,19 @@
-<h1>Tasks</h1>
+<h1>No Tasks Index, hehe </h1>
 
+<%= link_to 'Add New Task', new_user_category_task_path(@user, @category) %>
+<%= link_to 'Back to Category', user_category_path(@user, @category) %>
+
+<% if @tasks.any? %>
+  <% @tasks.each do |task| %>
+    <h2>
+      <%= link_to task.title, user_category_task_path(@user, @category, task) %>
+    </h2>
+    <p><%= truncate(task.definition, length: 100) %></p>
+    <p>Due: <%= task.due_date.strftime("%B %d, %Y at %I:%M %p") %></p>
+    <%= link_to 'Edit', edit_user_category_task_path(@user, @category, task) %>
+    <%= link_to 'Delete', user_category_task_path(@user, @category, task), data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' } %>
+    <hr> <%# Add a horizontal rule for visual separation %>
+  <% end %>
+<% else %>
+  <p>No tasks found in this category yet. Why not add one?</p>
+<% end %>

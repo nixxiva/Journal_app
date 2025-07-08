@@ -1,38 +1,45 @@
 require "test_helper"
 
 class TasksControllerTest < ActionDispatch::IntegrationTest
+  setup do
+    @user = users(:one)
+    sign_in @user
+    @category = categories(:one) 
+    @task = tasks(:one)
+  end
+
   test "should get index" do
-    get tasks_index_url
-    assert_response :success
+    get user_category_tasks_path(@user, @category)
+    assert_response :redirect
   end
 
   test "should get show" do
-    get tasks_show_url
+    get user_category_task_path(@user, @category, @task)
     assert_response :success
   end
 
   test "should get new" do
-    get tasks_new_url
+    get new_user_category_task_path(@user, @category)
     assert_response :success
   end
 
   test "should get create" do
-    get tasks_create_url
-    assert_response :success
+    post user_category_tasks_path(@user, @category), params: {task: {task_name: "Test task name", definition: "test definition", due_date: "07-09-2025"}}
+    assert_response :redirect
   end
 
   test "should get edit" do
-    get tasks_edit_url
+    get edit_user_category_task_path(@user, @category, @task)
     assert_response :success
   end
 
   test "should get update" do
-    get tasks_update_url
-    assert_response :success
+    patch user_category_task_path(@user, @category, @task), params: {task: {task_name: "Test task name", definition: "test definition", due_date: "07-09-2025"}}
+    assert_response :redirect
   end
 
   test "should get destroy" do
-    get tasks_destroy_url
+    get user_category_task_path(@user, @category, @task)
     assert_response :success
   end
 end
