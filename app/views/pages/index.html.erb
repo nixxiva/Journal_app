@@ -3,10 +3,35 @@
 <% if !current_user %>
   <h3>You are not signed in!</h3>
 <% else %>
-  <h3>You are signed in as <%= current_user.email %>!</h3>
+  <h3>You are currently signed in as <%= current_user.email %>!</h3>
 <% end %>
 
-<h4>Your Categories:</h4>
+<h1>Today's Tasks</h1>
+
+<% tasks_for_today_found = false %>
+
+<% @all_category.where(user_id: current_user.id).each do |category| %>
+  <% tasks_today_for_category = category.tasks.where(due_date: Date.today) %>
+
+  <% if tasks_today_for_category.any? %>
+    <h3><%= category.title %></h3>
+    <ul>
+      <% tasks_today_for_category.each do |task| %>
+        <li>
+          <h4><%= task.task_name %></h4>
+          <p><b>Definition: </b><%= task.definition %></p>
+        </li>
+      <% end %>
+    </ul>
+    <% tasks_for_today_found = true %>
+  <% end %>
+<% end %>
+
+<% if !tasks_for_today_found %>
+  <p>You have no tasks for today.</p>
+<% end %>
+
+<h4>My Categories:</h4>
 <% if @categories.any? %> 
   <ul>
     <% @categories.each do |category| %>
@@ -33,27 +58,3 @@
 
 <%= button_to "Logout", destroy_user_session_path, method: :delete, class: 'btn btn-danger' %>
 
-<h1>Today's Tasks</h1>
-
-<% no_tasks_for_today = true %> 
-
-<% @all_category.each do |category| %>
-  <% tasks_today_for_category = category.tasks.where(due_date: Date.today) %>
-
-  <% if tasks_today_for_category.any? %>
-    <h3><%= category.title %></h3>
-    <ul>
-      <% tasks_today_for_category.each do |task| %>
-        <li>
-          <h4><%= task.task_name %></h4>
-          <p><b>Definition: </b><%= task.definition %></p>
-        </li>
-      <% end %>
-    </ul>
-    <% no_tasks_for_today = false %>
-  <% end %>
-<% end %>
-
-<% if no_tasks_for_today %>
-  <p>You have no tasks for today.</p> 
-<% end %>
